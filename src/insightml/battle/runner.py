@@ -350,7 +350,7 @@ def _infer_task(target: pd.Series) -> str:
     """Infer 'classification' or 'regression' from a target series."""
     if (
         pd.api.types.is_bool_dtype(target)
-        or pd.api.types.is_categorical_dtype(target)
+        or isinstance(target.dtype, pd.CategoricalDtype)
         or pd.api.types.is_object_dtype(target)
         or str(target.dtype) in ("string", "category")
         or target.nunique() <= 20
