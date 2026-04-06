@@ -50,7 +50,7 @@ def render_pdf_report(report: AnalysisReport) -> bytes:
 
     from insightml.report.html_renderer import render_html_report
 
-    html_string = render_html_report(report, inline_plotly=True)
+    html_string = render_html_report(report)
     pdf = weasyprint.HTML(string=html_string).write_pdf()
     return pdf
 
