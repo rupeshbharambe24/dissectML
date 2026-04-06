@@ -27,6 +27,7 @@ from insightml._version import __version__
 from insightml._config import InsightMLConfig, config_context, get_config, set_config
 from insightml.exceptions import InsightMLError
 from insightml.eda import explore
+from insightml.battle import battle
 
 __all__ = [
     "__version__",
@@ -42,18 +43,6 @@ __all__ = [
     # Exceptions
     "InsightMLError",
 ]
-
-
-def battle(df, target: str, *, task: str = "auto", **kwargs):
-    """Train and compare multiple ML models side-by-side.
-
-    Available in v0.2+. Current version is v0.1 (EDA-only).
-    """
-    raise NotImplementedError(
-        "iml.battle() is available in v0.2+. "
-        f"Current: {__version__} (EDA-only). "
-        "Use iml.explore(df) for deep EDA."
-    )
 
 
 def analyze(data, target: str, *, task: str = "auto", **kwargs):
