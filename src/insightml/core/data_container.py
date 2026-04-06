@@ -58,7 +58,8 @@ class DataContainer:
         """Create a DataContainer from multiple input types.
 
         Args:
-            data: File path (str/Path) or a pandas DataFrame.
+            data: File path (str/Path), pandas DataFrame, Polars DataFrame,
+                  dict, list of dicts, or numpy array.
             target: Name of the target column.
             task: 'classification', 'regression', or 'auto' (default).
             config: Configuration override. Uses global config if None.
@@ -82,9 +83,9 @@ class DataContainer:
         elif isinstance(data, pd.DataFrame):
             df = data.copy()
         else:
-            raise TypeError(
-                f"'data' must be a file path or pandas DataFrame, got {type(data).__name__}"
-            )
+            # Delegate to to_pandas() — handles Polars DataFrames, dicts, lists, numpy arrays
+            from insightml._compat import to_pandas
+            df = to_pandas(data)
 
         # --- Validate ---
         if df.empty:
