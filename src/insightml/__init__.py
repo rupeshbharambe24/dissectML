@@ -28,12 +28,14 @@ from insightml._config import InsightMLConfig, config_context, get_config, set_c
 from insightml.exceptions import InsightMLError
 from insightml.eda import explore
 from insightml.battle import battle
+from insightml.intelligence import analyze_intelligence
 
 __all__ = [
     "__version__",
     # Public API
     "explore",
     "battle",
+    "analyze_intelligence",
     "analyze",
     # Config
     "InsightMLConfig",
