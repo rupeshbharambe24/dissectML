@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Research — InsightML Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-2: #1a1a26;
+    --border: #2a2a3a;
+    --text: #e8e6f0;
+    --text-dim: #8a8898;
+    --accent: #6366f1;
+    --accent-glow: rgba(99,102,241,0.15);
+    --green: #22c55e;
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --cyan: #06b6d4;
+    --pink: #ec4899;
+    --orange: #f97316;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(236,72,153,0.05) 0%, transparent 50%);
+    animation: drift 20s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%,100% { transform: translate(0,0) rotate(0deg); }
+    50% { transform: translate(-3%,2%) rotate(2deg); }
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid var(--accent);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    background: var(--accent-glow);
+  }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #e8e6f0 40%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 1.15rem;
+    color: var(--text-dim);
+    max-width: 650px;
+    margin: 0 auto 3rem;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .hero-stat .label { font-size: 0.8rem; color: var(--text-dim); margin-top: 4px; }
+
+  /* ═══ SECTIONS ═══ */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .section h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .section .desc {
+    color: var(--text-dim);
+    max-width: 700px;
+    margin-bottom: 3rem;
+    font-size: 1.05rem;
+  }
+
+  /* ═══ COMPETITOR GRID ═══ */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+  .comp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .comp-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .comp-card .tier-tag {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .tier-eda { background: rgba(6,182,212,0.12); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3); }
+  .tier-automl { background: rgba(249,115,22,0.12); color: var(--orange); border: 1px solid rgba(249,115,22,0.3); }
+  .tier-both { background: rgba(236,72,153,0.12); color: var(--pink); border: 1px solid rgba(236,72,153,0.3); }
+  .comp-card h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .comp-card .stars { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--amber); margin-bottom: 0.75rem; }
+  .comp-card p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
+  .comp-card .tag-row { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 6px; }
+  .comp-card .tag {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  /* ═══ GAP TABLE ═══ */
+  .gap-table-wrapper { overflow-x: auto; margin: 2rem 0; }
+  .gap-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    min-width: 900px;
+  }
+  .gap-table th {
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    border-bottom: 2px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  .gap-table th:first-child { border-radius: 10px 0 0 0; }
+  .gap-table th:last-child { border-radius: 0 10px 0 0; }
+  .gap-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .gap-table tr:hover td { background: var(--surface); }
+  .gap-table .feat { font-weight: 500; white-space: nowrap; }
+  .yes { color: var(--green); font-weight: 600; }
+  .no { color: var(--red); opacity: 0.6; }
+  .partial { color: var(--amber); }
+  .gap-table .yours { background: rgba(99,102,241,0.06); }
+  .gap-table th.yours-h { background: var(--accent); color: #fff; }
+
+  /* ═══ OPPORTUNITY CARDS ═══ */
+  .opp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+  .opp-card {
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+  }
+  .opp-card .opp-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 3rem;
+    font-weight: 700;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    opacity: 0.06;
+    color: var(--accent);
+  }
+  .opp-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .opp-card p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.65; }
+
+  /* ═══ VISION / ARCHITECTURE ═══ */
+  .arch-flow {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    margin: 2rem 0;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+  .arch-step {
+    flex: 1;
+    min-width: 180px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+    position: relative;
+  }
+  .arch-step:first-child { border-radius: 16px 0 0 16px; }
+  .arch-step:last-child { border-radius: 0 16px 16px 0; }
+  .arch-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: var(--accent);
+    z-index: 2;
+  }
+  .arch-step .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .arch-step h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .arch-step p { font-size: 0.75rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* ═══ CODE BLOCK ═══ */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+  }
+  .code-block pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+  }
+  .code-block .kw { color: var(--accent); }
+  .code-block .fn { color: var(--cyan); }
+  .code-block .str { color: var(--green); }
+  .code-block .cmt { color: #555; font-style: italic; }
+  .code-block .var { color: var(--pink); }
+
+  /* ═══ MARKET SIZE ═══ */
+  .market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0;
+  }
+  .market-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .market-card .big-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .market-card .sub { font-size: 0.85rem; color: var(--text-dim); }
+  .c-accent { color: var(--accent); }
+  .c-green { color: var(--green); }
+  .c-pink { color: var(--pink); }
+  .c-amber { color: var(--amber); }
+  .c-cyan { color: var(--cyan); }
+
+  /* ═══ RISK TABLE ═══ */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin: 2rem 0;
+  }
+  @media(max-width:700px) { .risk-grid { grid-template-columns: 1fr; } }
+  .risk-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .risk-card h3 { font-size: 1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+  .risk-card ul { list-style: none; padding: 0; }
+  .risk-card li { font-size: 0.85rem; color: var(--text-dim); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); display: flex; align-items: start; gap: 8px; line-height: 1.5; }
+  .risk-card li::before { content: '•'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+  /* ═══ ROADMAP ═══ */
+  .timeline { margin: 2rem 0; position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .tl-item { margin-bottom: 2.5rem; position: relative; }
+  .tl-dot {
+    position: absolute;
+    left: -28px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+  }
+  .tl-item h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+  .tl-item .tl-time { font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; font-family: 'JetBrains Mono', monospace; }
+  .tl-item p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  .highlight-box {
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 2rem;
+    background: var(--accent-glow);
+    margin: 2rem 0;
+  }
+  .highlight-box h3 { font-size: 1.2rem; margin-bottom: 0.75rem; }
+  .highlight-box p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.7; }
+
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ HERO ═══ -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Market Research Report — April 2026</div>
+    <h1>The Case for <em>InsightML</em></h1>
+    <p>A comprehensive market analysis for building a unified Python library that combines deep Auto-EDA with comparative model analysis — the missing middle layer nobody owns.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">180M+</div><div class="label">GitHub Developers</div></div>
+      <div class="hero-stat"><div class="num">16+</div><div class="label">AutoML Frameworks</div></div>
+      <div class="hero-stat"><div class="num">10+</div><div class="label">Auto-EDA Libraries</div></div>
+      <div class="hero-stat"><div class="num">0</div><div class="label">Unified EDA→Model Insight Libs</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ LANDSCAPE ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">01 — Competitive Landscape</div>
+  <h2>Existing Players</h2>
+  <p class="desc">The market is split into two disconnected camps: Auto-EDA tools that stop at data profiling, and AutoML tools that skip deep understanding. Nobody bridges the gap.</p>
+
+  <div class="comp-grid">
+    <div class="comp-card">
+      <span class="tier-tag tier-eda">Auto-EDA</span>
+      <h3>YData-Profiling</h3>
+      <div class="stars">★ 13K+ GitHub Stars</div>
+      <p>One-line profiling reports with stats, correlations, missing data, time-series support, and dataset comparison. The most mature Auto-EDA tool.</p>
+      <div class="tag-row"><span class="tag">1-line reports</span><span class="tag">Spark support</span><span class="tag">Time series</span><span class="tag">Slow on big data</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-eda">Auto-EDA</span>
+      <h3>DataPrep</h3>
+      <div class="stars">★ 2K+ GitHub Stars</div>
+      <p>Dask-based EDA that's 10x faster than Pandas tools. Three components: Connector (API ingestion), EDA (exploration), and Clean (validation).</p>
+      <div class="tag-row"><span class="tag">Dask-powered</span><span class="tag">10x faster</span><span class="tag">Interactive</span><span class="tag">Data cleaning</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-eda">Auto-EDA</span>
+      <h3>SweetViz</h3>
+      <div class="stars">★ 3K+ GitHub Stars</div>
+      <p>Beautiful HTML reports with target analysis and train/test comparison. Mixed-type associations across categorical, numerical, and cross-type features.</p>
+      <div class="tag-row"><span class="tag">HTML reports</span><span class="tag">Target analysis</span><span class="tag">Dataset comparison</span><span class="tag">Static only</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-eda">Auto-EDA</span>
+      <h3>D-Tale</h3>
+      <div class="stars">★ 4.8K+ GitHub Stars</div>
+      <p>Flask+React interactive GUI for no-code Pandas operations. Supports network graphs, Plotly charts, code export. Closest to a full exploration IDE.</p>
+      <div class="tag-row"><span class="tag">GUI-based</span><span class="tag">Code export</span><span class="tag">Plotly</span><span class="tag">No ML insights</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-automl">AutoML</span>
+      <h3>PyCaret</h3>
+      <div class="stars">★ 9K+ GitHub Stars</div>
+      <p>Low-code AutoML covering classification, regression, clustering, anomaly detection. compare_models() trains 20+ algos. Plot_model for basic viz. No deep learning.</p>
+      <div class="tag-row"><span class="tag">Low-code</span><span class="tag">20+ models</span><span class="tag">MLflow</span><span class="tag">No DL</span><span class="tag">Basic viz</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-automl">AutoML</span>
+      <h3>AutoGluon</h3>
+      <div class="stars">★ 8K+ GitHub Stars</div>
+      <p>AWS-backed framework using multi-layer stacking & ensembling. Wins Kaggle competitions. Supports tabular, text, image, time series. Focused on winning, not insights.</p>
+      <div class="tag-row"><span class="tag">AWS</span><span class="tag">Stacking</span><span class="tag">Multi-modal</span><span class="tag">Black-box</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-automl">AutoML</span>
+      <h3>MLJAR</h3>
+      <div class="stars">★ 3K+ GitHub Stars</div>
+      <p>AutoML with per-model markdown reports, SHAP explanations, permutation importance. Closest to "explainable AutoML" but reports are per-model, not comparative.</p>
+      <div class="tag-row"><span class="tag">Explainable</span><span class="tag">SHAP</span><span class="tag">Reports</span><span class="tag">Per-model only</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-automl">AutoML</span>
+      <h3>LazyPredict</h3>
+      <div class="stars">★ 2.8K+ GitHub Stars</div>
+      <p>Trains 30+ models in 2 lines. Outputs a sorted comparison table. Extremely simple but zero depth — no plots, no tuning, no explainability, no deep insights.</p>
+      <div class="tag-row"><span class="tag">2 lines</span><span class="tag">30+ models</span><span class="tag">No plots</span><span class="tag">No depth</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-automl">AutoML</span>
+      <h3>FLAML</h3>
+      <div class="stars">★ 4K+ GitHub Stars</div>
+      <p>Microsoft Research's lightweight AutoML using cost-effective budget-aware optimization. Fastest at finding good models under constraints. Minimal viz or insights.</p>
+      <div class="tag-row"><span class="tag">Microsoft</span><span class="tag">Budget-aware</span><span class="tag">Fast</span><span class="tag">No viz</span></div>
+    </div>
+    <div class="comp-card">
+      <span class="tier-tag tier-both">EDA + ML</span>
+      <h3>klar-EDA v2</h3>
+      <div class="stars">★ &lt;500 Stars</div>
+      <p>Modernized EDA with AI-powered LLM insights and async Polars processing. Plugin architecture. Promising concept but early-stage, small community, no model analysis.</p>
+      <div class="tag-row"><span class="tag">AI insights</span><span class="tag">Polars</span><span class="tag">Plugins</span><span class="tag">Early stage</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ GAP ANALYSIS ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">02 — Gap Analysis</div>
+  <h2>What Nobody Does</h2>
+  <p class="desc">A feature-by-feature comparison reveals the massive whitespace between EDA tools and Model Comparison tools. Your library lives in that gap.</p>
+
+  <div class="gap-table-wrapper">
+    <table class="gap-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>YData</th>
+          <th>DataPrep</th>
+          <th>SweetViz</th>
+          <th>PyCaret</th>
+          <th>MLJAR</th>
+          <th>AutoGluon</th>
+          <th>LazyPredict</th>
+          <th class="yours-h">InsightML (Yours)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="feat">EDA — Basic Stats & Distributions</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">EDA — Correlation Analysis</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">EDA — Missing Data Deep-Dive</td><td class="yes">✓</td><td class="yes">✓</td><td class="partial">~</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">EDA — Statistical Tests (normality, ANOVA)</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">EDA — Outlier / Anomaly Detection</td><td class="partial">Paid</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">EDA — Target Leakage Detection</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">EDA — Feature Interaction Discovery</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">EDA — Cluster / Segment Discovery</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="partial">~</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">Train Multiple Models (1 call)</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">Side-by-Side Model Comparison Charts</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="partial">~</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">Per-Model Explainability (SHAP, etc.)</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">Cross-Model Error Analysis</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">Statistical Significance Between Models</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">Auto-Generated Rich HTML Report</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="partial">MD</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">End-to-End: EDA → Model → Insights</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+        <tr><td class="feat">Deep Learning Models Included</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="no">✗</td><td class="yours yes">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box">
+    <h3>The Key Insight</h3>
+    <p>Today, data scientists use <strong>3–5 different libraries</strong> to go from raw data to model understanding: YData for profiling → manual code for stats tests → PyCaret or LazyPredict for model screening → SHAP library for explainability → matplotlib for custom comparison plots. <strong>No single library offers the full journey from "What is my data?" to "Which model is best and WHY?"</strong> — that's your library.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ MARKET SIZE ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">03 — Market Opportunity</div>
+  <h2>Who Would Use This & Why</h2>
+  <p class="desc">The target audience spans from students to senior data scientists, but the core value proposition differs by segment.</p>
+
+  <div class="market-grid">
+    <div class="market-card">
+      <div class="big-num c-accent">180M+</div>
+      <div class="sub">Developers on GitHub globally. Python leads at 38% share in AI/data science. Over 35M Indian developers (30% YoY growth).</div>
+    </div>
+    <div class="market-card">
+      <div class="big-num c-green">$15B+</div>
+      <div class="sub">Global AutoML market projected by 2030. Growing at 49% CAGR. Driven by demand for faster, more accessible ML tooling.</div>
+    </div>
+    <div class="market-card">
+      <div class="big-num c-pink">55%</div>
+      <div class="sub">Of companies haven't deployed an ML model (Algorithmia study). Key barrier: complexity of managing data workflows and model evaluation.</div>
+    </div>
+    <div class="market-card">
+      <div class="big-num c-amber">98%</div>
+      <div class="sub">Year-over-year increase in generative AI projects on GitHub. 92% rise in Jupyter Notebook usage. The ecosystem is exploding.</div>
+    </div>
+  </div>
+
+  <h3 style="margin: 3rem 0 1.5rem; font-size: 1.3rem;">Target User Segments</h3>
+  <div class="opp-grid">
+    <div class="opp-card">
+      <div class="opp-num">01</div>
+      <h3>Students & Learners</h3>
+      <p>ML/DS students doing coursework or Kaggle competitions. They need to <strong>understand</strong> data and models, not just predict. Your library is their learning accelerator — one function call produces what takes hours of manual work. Massive volume, community builders, and future evangelists.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">02</div>
+      <h3>Data Scientists (Junior–Mid)</h3>
+      <p>Professionals who spend 40-60% of time on EDA and initial model selection. They're currently stitching together 3-5 libraries. Your tool gives them a <strong>single workflow from data → insights → model comparison</strong> with exportable reports to show stakeholders.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">03</div>
+      <h3>Researchers & Academics</h3>
+      <p>Publishing papers requires rigorous model comparisons with statistical significance tests, multiple metrics, and reproducible results. No library currently automates this — they manually build comparison frameworks every time.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">04</div>
+      <h3>Citizen Data Scientists</h3>
+      <p>Domain experts (healthcare, finance, agriculture) with basic Python skills. They need maximum insight with minimum code. Gartner coined this role — PyCaret targets them but stops at model selection without deep understanding.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">05</div>
+      <h3>Hackathon Teams</h3>
+      <p>Time-pressured teams needing rapid data understanding + model screening in hours. One comprehensive function call producing a full EDA + model comparison report is a competitive advantage.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">06</div>
+      <h3>Consulting & Freelance DS</h3>
+      <p>Professionals who deliver analysis reports to clients. Auto-generated professional HTML/PDF reports with EDA insights + model comparisons would directly save billable hours and improve client deliverables.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ PRODUCT VISION ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">04 — Product Vision</div>
+  <h2>Library Architecture: The Full Pipeline</h2>
+  <p class="desc">From raw DataFrame to publication-ready insights in as few as 3 function calls. Every stage produces rich interactive output.</p>
+
+  <div class="arch-flow">
+    <div class="arch-step">
+      <div class="step-num">STAGE 1</div>
+      <h4>Deep EDA</h4>
+      <p>Auto-detect data types. Stats, distributions, correlations, missing patterns, outliers, statistical tests, cluster discovery, feature interactions</p>
+    </div>
+    <div class="arch-step">
+      <div class="step-num">STAGE 2</div>
+      <h4>Pre-Model Intelligence</h4>
+      <p>Target leakage scan, multicollinearity detection, feature importance (mutual info), recommended algorithms, data readiness score</p>
+    </div>
+    <div class="arch-step">
+      <div class="step-num">STAGE 3</div>
+      <h4>Multi-Model Training</h4>
+      <p>Train 20+ models (classical ML + optional DL) with cross-validation. Parallel execution. Progress tracking. Auto hyperparameter tuning</p>
+    </div>
+    <div class="arch-step">
+      <div class="step-num">STAGE 4</div>
+      <h4>Comparative Analysis</h4>
+      <p>Side-by-side metrics, ROC/PR curves, confusion matrices, error analysis, model disagreement, statistical significance tests, Pareto fronts</p>
+    </div>
+    <div class="arch-step">
+      <div class="step-num">STAGE 5</div>
+      <h4>Insight Report</h4>
+      <p>Auto-generated interactive HTML/PDF with narrative insights, all charts, recommendations, exportable tables, and reproducible code</p>
+    </div>
+  </div>
+
+  <h3 style="margin: 3rem 0 1rem;">Dream API — 3 Lines to Full Insights</h3>
+  <div class="code-block">
+<pre><span class="kw">import</span> insightml <span class="kw">as</span> <span class="var">iml</span>
+
+<span class="cmt"># ══ ONE-LINER: Full EDA + Model Comparison Pipeline ══</span>
+<span class="var">report</span> = <span class="var">iml</span>.<span class="fn">analyze</span>(
+    data=<span class="str">"dataset.csv"</span>,
+    target=<span class="str">"price"</span>,
+    task=<span class="str">"regression"</span>    <span class="cmt"># auto-detected if not specified</span>
+)
+
+<span class="cmt"># ══ Access any layer individually ══</span>
+<span class="var">report</span>.<span class="fn">eda</span>.<span class="fn">show</span>()           <span class="cmt"># Interactive EDA dashboard</span>
+<span class="var">report</span>.<span class="fn">models</span>.<span class="fn">compare</span>()     <span class="cmt"># Side-by-side model comparison</span>
+<span class="var">report</span>.<span class="fn">insights</span>.<span class="fn">summary</span>()   <span class="cmt"># Natural language key findings</span>
+<span class="var">report</span>.<span class="fn">export</span>(<span class="str">"report.html"</span>) <span class="cmt"># Full interactive report</span>
+
+<span class="cmt"># ══ OR use stages independently ══</span>
+<span class="var">eda</span> = <span class="var">iml</span>.<span class="fn">explore</span>(df)                  <span class="cmt"># Deep EDA only</span>
+<span class="var">models</span> = <span class="var">iml</span>.<span class="fn">battle</span>(df, target=<span class="str">"price"</span>)  <span class="cmt"># Model comparison only</span>
+
+<span class="cmt"># ══ Granular access to every insight ══</span>
+<span class="var">eda</span>.<span class="fn">outliers</span>.<span class="fn">plot</span>()           <span class="cmt"># Outlier analysis with IQR + Z-score + Isolation Forest</span>
+<span class="var">eda</span>.<span class="fn">correlations</span>.<span class="fn">heatmap</span>()   <span class="cmt"># Multi-type correlation matrix</span>
+<span class="var">eda</span>.<span class="fn">tests</span>.<span class="fn">normality</span>()        <span class="cmt"># Shapiro-Wilk for all numerical cols</span>
+<span class="var">eda</span>.<span class="fn">missing</span>.<span class="fn">patterns</span>()       <span class="cmt"># MCAR/MAR/MNAR analysis</span>
+
+<span class="var">models</span>.<span class="fn">error_analysis</span>()       <span class="cmt"># Where models disagree and why</span>
+<span class="var">models</span>.<span class="fn">significance_test</span>()    <span class="cmt"># McNemar / paired t-test between top models</span>
+<span class="var">models</span>.<span class="fn">pareto</span>()               <span class="cmt"># Accuracy vs. training time Pareto front</span>
+<span class="var">models</span>.<span class="fn">shap_compare</span>()         <span class="cmt"># SHAP importance across all models</span></pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ UNIQUE FEATURES ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">05 — Differentiation</div>
+  <h2>12 Features Nobody Else Has</h2>
+  <p class="desc">These are the capabilities that exist nowhere in any single library today. Each one alone could drive adoption.</p>
+
+  <div class="opp-grid">
+    <div class="opp-card">
+      <div class="opp-num">01</div>
+      <h3>End-to-End Pipeline</h3>
+      <p>One library from raw CSV to model-comparison report. No stitching together YData + PyCaret + SHAP + matplotlib. One import, one workflow.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">02</div>
+      <h3>Cross-Model Error Analysis</h3>
+      <p>Automatically identify which samples Model A gets right but Model B gets wrong. Cluster these disagreement regions. Reveal where models have complementary strengths.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">03</div>
+      <h3>Statistical Significance Testing</h3>
+      <p>Automated McNemar tests, paired t-tests, Wilcoxon signed-rank between model performances. No library does this — researchers build it manually every time.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">04</div>
+      <h3>EDA-Informed Model Selection</h3>
+      <p>Use EDA insights (feature distributions, cardinality, sparsity, non-linearity) to recommend which algorithms to prioritize before training even begins.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">05</div>
+      <h3>Target Leakage Detection</h3>
+      <p>Automatically scan for suspiciously high correlations, look-ahead bias, and data contamination between features and target — a critical step nobody automates.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">06</div>
+      <h3>Accuracy vs. Speed Pareto Front</h3>
+      <p>Interactive visualization showing the tradeoff between model accuracy and training/inference time. Help users pick the right model for their constraints.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">07</div>
+      <h3>Automated Statistical Tests in EDA</h3>
+      <p>Shapiro-Wilk normality, Levene's variance, chi-square independence, ANOVA/Kruskal-Wallis across all relevant feature pairs. Zero existing EDA tools do this.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">08</div>
+      <h3>SHAP Comparison Across Models</h3>
+      <p>Side-by-side SHAP importance plots for all trained models. See how different algorithms weight features differently — reveals model behavior differences.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">09</div>
+      <h3>Missing Data Intelligence</h3>
+      <p>Beyond visualization: automated MCAR/MAR/MNAR classification using Little's test and pattern analysis. Recommend imputation strategies based on missingness type.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">10</div>
+      <h3>Unsupervised Discovery Layer</h3>
+      <p>Automatic clustering (K-Means + DBSCAN), segment profiling, and anomaly detection as part of EDA. Reveal hidden structure before supervised learning.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">11</div>
+      <h3>Interactive HTML Mega-Report</h3>
+      <p>Single exportable HTML file containing the full EDA + model comparison with interactive Plotly charts, collapsible sections, and natural-language narrative summaries.</p>
+    </div>
+    <div class="opp-card">
+      <div class="opp-num">12</div>
+      <h3>Data Readiness Score</h3>
+      <p>A composite score (0-100) indicating how "ML-ready" the dataset is, based on missing values, imbalance, multicollinearity, outliers, and feature quality. Nobody does this.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ RISKS ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">06 — Risk Assessment</div>
+  <h2>Risks & Mitigations</h2>
+  <p class="desc">Every open-source project faces adoption challenges. Here's an honest assessment of what could go wrong and how to handle it.</p>
+
+  <div class="risk-grid">
+    <div class="risk-card">
+      <h3>⚠️ Risks</h3>
+      <ul>
+        <li><strong>Scope creep</strong> — trying to do too much at once. EDA + model training + reports + DL is enormous for a solo developer.</li>
+        <li><strong>PyCaret adds EDA</strong> — PyCaret is the most likely competitor to expand into your space. They already have the community.</li>
+        <li><strong>Dependency hell</strong> — combining sklearn, XGBoost, LightGBM, SHAP, Plotly, etc. creates version conflict nightmares.</li>
+        <li><strong>Performance on large datasets</strong> — full EDA + 20 models on millions of rows could be prohibitively slow without careful optimization.</li>
+        <li><strong>Maintenance burden</strong> — users expect bug fixes, new models, and updates. Open-source maintainer burnout is real.</li>
+        <li><strong>AI tools replacing this</strong> — Claude, ChatGPT with Code Interpreter can do ad-hoc EDA and model comparison via prompts.</li>
+      </ul>
+    </div>
+    <div class="risk-card">
+      <h3>🛡️ Mitigations</h3>
+      <ul>
+        <li><strong>Phase releases</strong> — launch with EDA-only (v0.1), add model comparison (v0.2), then reports (v0.3). Don't boil the ocean.</li>
+        <li><strong>Move fast on uniqueness</strong> — ship the 12 unique features first. If PyCaret copies you, you've already built the community.</li>
+        <li><strong>Optional dependencies</strong> — core = sklearn + plotly only. XGBoost/LightGBM/SHAP as optional extras [pip install insightml[full]].</li>
+        <li><strong>Polars + sampling</strong> — use Polars for EDA speed. Auto-sample large datasets for initial exploration, full data for final models.</li>
+        <li><strong>Good architecture</strong> — modular plugin system so community can contribute. Clear contribution docs from day 1.</li>
+        <li><strong>Complementary to AI</strong> — position as the tool AI assistants use. Reproducible, versioned, CI/CD-compatible. AI chats aren't.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ ROADMAP ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">07 — Development Roadmap</div>
+  <h2>Suggested 6-Month Plan</h2>
+  <p class="desc">A phased approach that ships value early and builds momentum through incremental releases.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-time">Month 1–2 &nbsp;→&nbsp; v0.1 "Deep EDA"</div>
+      <h4>Core EDA Engine</h4>
+      <p>Auto-detect data types, univariate/bivariate analysis, correlation matrix (Pearson + Spearman + Cramér's V), missing data patterns, outlier detection (IQR + Z-score + Isolation Forest), statistical tests (normality, chi-square). Interactive Plotly output. Single function: <code>iml.explore(df)</code>. Ship to PyPI. Write 3 blog posts + demo notebook.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-time">Month 2–3 &nbsp;→&nbsp; v0.2 "Model Battle"</div>
+      <h4>Multi-Model Training & Comparison</h4>
+      <p>Train 15+ sklearn models in one call. Cross-validation. Comparison table + side-by-side plots (ROC, confusion matrix, learning curves). Statistical significance between models. Pareto front (accuracy vs. speed). Function: <code>iml.battle(df, target)</code>. Submit to Kaggle notebooks as demos.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-time">Month 3–4 &nbsp;→&nbsp; v0.3 "Insight Bridge"</div>
+      <h4>EDA-to-Model Intelligence</h4>
+      <p>Connect EDA findings to model selection recommendations. Target leakage detection. Data readiness score. Feature interaction discovery. Pre-model intelligence report. Cross-model error analysis + SHAP comparison. Unified pipeline: <code>iml.analyze(df, target)</code>.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-time">Month 4–5 &nbsp;→&nbsp; v0.4 "Report Engine"</div>
+      <h4>Auto-Generated Interactive Reports</h4>
+      <p>Export full analysis as a single interactive HTML file. Collapsible sections, narrative summaries, all charts embedded. PDF export option. Branded templates. Optimized for sharing with non-technical stakeholders.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-time">Month 5–6 &nbsp;→&nbsp; v0.5 "Scale & Community"</div>
+      <h4>Performance + Ecosystem</h4>
+      <p>Polars backend for 10x EDA speed. Optional deep learning models (simple neural nets via sklearn MLPClassifier, optional PyTorch). Plugin system for community extensions. Comprehensive docs site. Conference/meetup talks. Target: 500+ GitHub stars.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ NAMING ═══ -->
+<div class="divider"></div>
+<div class="section">
+  <div class="section-label">08 — Naming & Positioning</div>
+  <h2>Brand Strategy</h2>
+  <p class="desc">The name should communicate "understanding" over "automation" — this isn't another AutoML tool.</p>
+
+  <div class="opp-grid">
+    <div class="opp-card">
+      <h3>InsightML</h3>
+      <p>"Not AutoML — Auto-Analysis." Positions clearly against the AutoML crowd. Communicates that the value is understanding, not just prediction. Available on PyPI as of research date.</p>
+    </div>
+    <div class="opp-card">
+      <h3>DeepLook</h3>
+      <p>"Deep look into your data and models." Short, memorable, implies thoroughness. Visual metaphor works well for a tool that produces rich visualizations.</p>
+    </div>
+    <div class="opp-card">
+      <h3>MLScope</h3>
+      <p>"A microscope for your ML pipeline." Scientific metaphor. Implies precision and depth. Easy to remember and spell.</p>
+    </div>
+    <div class="opp-card">
+      <h3>Xplore</h3>
+      <p>"Explore everything — data, models, insights." Shortest option. Catchy. But could sound too EDA-focused and miss the model-comparison angle.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top: 2rem;">
+    <h3>Positioning Statement</h3>
+    <p><em>"InsightML is a Python library for data scientists who want to deeply understand their data and models — not just find the best predictor. With 3 lines of code, get comprehensive EDA, train and compare 20+ models, understand why they differ, and export publication-ready interactive reports. Think of it as the missing layer between Pandas and production ML."</em></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FOOTER ═══ -->
+<div class="divider"></div>
+<footer>
+  Market Research Report prepared for Rupesh Bharambe &nbsp;·&nbsp; April 2026<br>
+  Data sourced from GitHub, PyPI, academic publications, and industry reports
+</footer>
+
+</body>
+</html>

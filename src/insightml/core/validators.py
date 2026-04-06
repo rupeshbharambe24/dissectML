@@ -99,10 +99,13 @@ def infer_column_type(
     if nu == n:
         return ColumnType.UNIQUE_ID
 
-    # Try parsing as datetime
+    # Try parsing as datetime (suppress format-inference warning)
     try:
+        import warnings
         sample = col.dropna().head(100)
-        parsed = pd.to_datetime(sample, errors="coerce")
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            parsed = pd.to_datetime(sample, errors="coerce", format="mixed")
         if parsed.notna().mean() > 0.8:
             return ColumnType.DATETIME
     except Exception:
