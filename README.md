@@ -6,6 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://github.com/rupeshbharambe24/dissectML)
 [![CI](https://github.com/rupeshbharambe24/dissectML/actions/workflows/ci.yml/badge.svg)](https://github.com/rupeshbharambe24/dissectML/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/rupeshbharambe24/dissectML/blob/master/LICENSE)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/rupeshbharambe24/dissectML/blob/master/notebooks/dissectml_demo.ipynb)
 
 **The missing middle layer between EDA and AutoML.**
 
