@@ -7,7 +7,7 @@ from typing import Any
 
 import pandas as pd
 
-from dissectml._config import InsightMLConfig, get_config
+from dissectml._config import DissectMLConfig, get_config
 from dissectml._types import LeakageWarning
 from dissectml.intelligence.feature_importance import compute_feature_importance
 from dissectml.intelligence.leakage import detect_leakage
@@ -41,7 +41,7 @@ class IntelligenceResult:
         target: str | None = None,
         task: str | None = None,
         datetime_col: str | None = None,
-        config: InsightMLConfig | None = None,
+        config: DissectMLConfig | None = None,
         eda_result: Any = None,
     ) -> None:
         self._df = df

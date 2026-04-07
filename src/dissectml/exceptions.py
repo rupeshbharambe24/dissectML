@@ -1,15 +1,15 @@
-"""InsightML exception hierarchy."""
+"""DissectML exception hierarchy."""
 
 from __future__ import annotations
 
 
-class InsightMLError(Exception):
-    """Base exception for all InsightML errors."""
+class DissectMLError(Exception):
+    """Base exception for all DissectML errors."""
 
 
 # --- Input / Validation errors ---
 
-class ValidationError(InsightMLError):
+class ValidationError(DissectMLError):
     """Input data or parameter failed validation."""
 
 
@@ -31,7 +31,7 @@ class InvalidTaskError(ValidationError):
 
 # --- Dependency errors ---
 
-class DependencyError(InsightMLError):
+class DependencyError(DissectMLError):
     """A required dependency is missing."""
 
 
@@ -41,7 +41,7 @@ class OptionalDependencyError(DependencyError):
 
 # --- Computation errors ---
 
-class ComputationError(InsightMLError):
+class ComputationError(DissectMLError):
     """An error occurred during computation."""
 
 
@@ -55,7 +55,7 @@ class StageTimeoutError(ComputationError):
 
 # --- Report errors ---
 
-class ReportError(InsightMLError):
+class ReportError(DissectMLError):
     """An error occurred during report generation."""
 
 

@@ -1,11 +1,11 @@
 <div align="center">
 
-# InsightML
+# DissectML
 
 [![PyPI version](https://img.shields.io/pypi/v/dissectml)](https://pypi.org/project/dissectml/)
-[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://github.com/rupeshbharambe24/InsightML)
-[![CI](https://github.com/rupeshbharambe24/InsightML/actions/workflows/ci.yml/badge.svg)](https://github.com/rupeshbharambe24/InsightML/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/rupeshbharambe24/InsightML/blob/master/LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://github.com/rupeshbharambe24/dissectML)
+[![CI](https://github.com/rupeshbharambe24/dissectML/actions/workflows/ci.yml/badge.svg)](https://github.com/rupeshbharambe24/dissectML/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://github.com/rupeshbharambe24/dissectML/blob/master/LICENSE)
 
 **The missing middle layer between EDA and AutoML.**
 
@@ -17,12 +17,12 @@
 </div>
 
 <p align="center">
-  <img src="docs/assets/report_preview.png" alt="InsightML HTML Report Preview" width="90%">
+  <img src="docs/assets/report_preview.png" alt="DissectML HTML Report Preview" width="90%">
 </p>
 
 ---
 
-## Why InsightML?
+## Why DissectML?
 
 Most data science workflows look the same: run pandas-profiling for a quick
 summary, switch to scikit-learn for preprocessing, try a handful of models with
@@ -31,7 +31,7 @@ time you have answers, you have imported 3-5 separate libraries, written
 hundreds of lines of glue code, and lost the thread that connects your data
 findings to your modelling decisions.
 
-InsightML (`dissectml`) closes that gap. It is a single, unified pipeline that
+DissectML (`dissectml`) closes that gap. It is a single, unified pipeline that
 runs deep exploratory data analysis, pre-model intelligence checks (leakage
 detection, readiness scoring, algorithm recommendations), a multi-model battle
 arena, cross-model statistical comparison, and publication-ready HTML report
@@ -169,8 +169,8 @@ pip install dissectml[full]      # Everything above
 ### Development
 
 ```bash
-git clone https://github.com/rupeshbharambe24/InsightML.git
-cd InsightML
+git clone https://github.com/rupeshbharambe24/dissectML.git
+cd DissectML
 pip install -e ".[dev]"
 ```
 
@@ -180,7 +180,7 @@ pip install -e ".[dev]"
 
 ## Comparison with Alternatives
 
-| Feature                    | InsightML | PyCaret | LazyPredict | YData Profiling |
+| Feature                    | DissectML | PyCaret | LazyPredict | YData Profiling |
 |----------------------------|:---------:|:-------:|:-----------:|:---------------:|
 | Deep EDA                   | Yes       | --      | --          | Yes             |
 | Statistical Tests          | Yes       | --      | --          | Partial         |
@@ -191,7 +191,7 @@ pip install -e ".[dev]"
 | Target Leakage Detection   | Yes       | --      | --          | --              |
 | Data Readiness Score       | Yes       | --      | --          | --              |
 
-InsightML is the only library that covers the full spectrum from statistical data
+DissectML is the only library that covers the full spectrum from statistical data
 profiling through model comparison with a single, coherent API. Other tools excel
 at individual stages but leave you to bridge the gaps yourself.
 
@@ -199,7 +199,7 @@ at individual stages but leave you to bridge the gaps yourself.
 
 ## Architecture
 
-InsightML is organized into five pipeline stages, each backed by a dedicated
+DissectML is organized into five pipeline stages, each backed by a dedicated
 subpackage:
 
 ```
@@ -226,7 +226,7 @@ Stage 5: Report         dissectml.report        Jinja2 HTML builder, narrative g
 
 ## Configuration
 
-InsightML uses a global configuration object for controlling default behavior:
+DissectML uses a global configuration object for controlling default behavior:
 
 ```python
 import dissectml as iml
@@ -263,18 +263,18 @@ Full documentation, API reference, and tutorials are available at:
 ## Contributing
 
 Contributions are welcome. Please see
-[CONTRIBUTING.md](https://github.com/rupeshbharambe24/InsightML/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING.md](https://github.com/rupeshbharambe24/dissectML/blob/master/CONTRIBUTING.md)
 for guidelines on setting up a development environment, running the test suite,
 and submitting pull requests.
 
 If you find a bug or have a feature request, please open an issue on the
-[GitHub issue tracker](https://github.com/rupeshbharambe24/InsightML/issues).
+[GitHub issue tracker](https://github.com/rupeshbharambe24/dissectML/issues).
 
 ---
 
 ## License
 
-InsightML is released under the [MIT License](https://github.com/rupeshbharambe24/InsightML/blob/master/LICENSE).
+DissectML is released under the [MIT License](https://github.com/rupeshbharambe24/dissectML/blob/master/LICENSE).
 
 ---
 

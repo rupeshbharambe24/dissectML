@@ -1,4 +1,4 @@
-"""Built-in demo datasets for InsightML.
+"""Built-in demo datasets for DissectML.
 
 Quick start::
 

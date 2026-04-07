@@ -8,7 +8,7 @@ from typing import Any
 
 import pandas as pd
 
-from dissectml._config import InsightMLConfig, get_config
+from dissectml._config import DissectMLConfig, get_config
 from dissectml._sampling import smart_sample
 from dissectml.core.base import StageResult
 from dissectml.viz.display import display_html
@@ -37,7 +37,7 @@ class EDAResult(StageResult):
         *,
         target: str | None = None,
         task: str = "auto",
-        config: InsightMLConfig | None = None,
+        config: DissectMLConfig | None = None,
     ) -> None:
         super().__init__(stage_name="EDA", duration_seconds=0.0)
         self._df = df
@@ -124,7 +124,7 @@ class EDAResult(StageResult):
         ov = self.overview
         html_parts = [
             "<div style='font-family:system-ui;max-width:900px'>",
-            "<h2>InsightML EDA Report</h2>",
+            "<h2>DissectML EDA Report</h2>",
             f"<p>Dataset: <b>{len(self._df):,} rows × {len(self._df.columns)} columns</b>",
         ]
         if self._target:
@@ -204,7 +204,7 @@ def explore(
         target: Name of the target column (optional). Enables target analysis
                 and class balance checks when provided.
         task: 'classification', 'regression', or 'auto' (default).
-        **config_kwargs: Override any InsightMLConfig field for this call only.
+        **config_kwargs: Override any DissectMLConfig field for this call only.
 
     Returns:
         EDAResult — lazy, exploration-ready result object.

@@ -1,8 +1,8 @@
-# InsightML - Final Implementation Plan
+# DissectML - Final Implementation Plan
 
-> **This is the single source of truth for building InsightML.**
+> **This is the single source of truth for building DissectML.**
 > All decisions, architecture, algorithms, and implementation details are here.
-> Reference: `InsightML.html` (market research), this file (how to build it).
+> Reference: `DissectML.html` (market research), this file (how to build it).
 
 ---
 
@@ -10,7 +10,7 @@
 
 | Decision | Choice | Rationale |
 |---|---|---|
-| Package name (PyPI) | `dissectml` | Clean, readable, matches "InsightML" |
+| Package name (PyPI) | `dissectml` | Clean, readable, matches "DissectML" |
 | Import name | `dissectml` | `import dissectml as iml` |
 | Python environment | Dedicated `.venv` in project | Shared D:\commonenv has NumPy/SciPy conflict |
 | Python version | `>=3.10` | Needed for `match`, `X \| Y` union types |
@@ -30,7 +30,7 @@
 
 ```bash
 # 1. Create dedicated venv
-cd D:\Projects\insightML
+cd D:\Projects\dissectML
 python -m venv .venv
 
 # 2. Activate
@@ -41,20 +41,20 @@ python -m venv .venv
 pip install -e ".[dev]"
 ```
 
-The `.venv` isolates InsightML from the broken `D:\commonenv` (NumPy 2.4.4 vs SciPy 1.11.4 conflict). All dependency versions are pinned via `pyproject.toml`.
+The `.venv` isolates DissectML from the broken `D:\commonenv` (NumPy 2.4.4 vs SciPy 1.11.4 conflict). All dependency versions are pinned via `pyproject.toml`.
 
 ---
 
 ## 2. Project Structure
 
 ```
-D:\Projects\insightML\
+D:\Projects\dissectML\
 ├── pyproject.toml                     # Build config, deps, tool config
 ├── README.md
 ├── LICENSE                            # MIT
 ├── CHANGELOG.md
 ├── PLAN.md                            # This file
-├── InsightML.html                     # Market research (existing)
+├── DissectML.html                     # Market research (existing)
 ├── .gitignore
 ├── .pre-commit-config.yaml
 │
@@ -63,11 +63,11 @@ D:\Projects\insightML\
 │       ├── __init__.py                # Public API: analyze(), explore(), battle()
 │       ├── _version.py                # __version__ = "0.1.0"
 │       ├── _types.py                  # Enums, TypedDicts, type aliases
-│       ├── _config.py                 # InsightMLConfig dataclass + get/set/context
+│       ├── _config.py                 # DissectMLConfig dataclass + get/set/context
 │       ├── _lazy.py                   # Optional dependency guard
 │       ├── _sampling.py               # Smart sampling (stratified, temporal, random)
 │       ├── _io.py                     # File loading: CSV, Excel, Parquet, JSON
-│       ├── exceptions.py              # InsightMLError hierarchy
+│       ├── exceptions.py              # DissectMLError hierarchy
 │       │
 │       ├── core/
 │       │   ├── __init__.py
@@ -146,7 +146,7 @@ D:\Projects\insightML\
 │       │
 │       ├── viz/
 │       │   ├── __init__.py
-│       │   ├── theme.py               # InsightML Plotly theme/template
+│       │   ├── theme.py               # DissectML Plotly theme/template
 │       │   ├── charts.py              # Chart factory functions
 │       │   └── display.py             # Jupyter _repr_html_ mixin, env detection
 │       │
@@ -313,7 +313,7 @@ class PipelineContext:
     intelligence_result: IntelligenceResult | None = None
     battle_result: BattleResult | None = None
     compare_result: CompareResult | None = None
-    config: InsightMLConfig = field(default_factory=InsightMLConfig)
+    config: DissectMLConfig = field(default_factory=DissectMLConfig)
     progress: ProgressTracker = field(default_factory=default_progress)
 ```
 
@@ -324,7 +324,7 @@ class BaseAnalysisModule(ABC):
     def __init__(self, df, *, target=None, config=None):
         self._df = df
         self._target = target
-        self._config = config or InsightMLConfig()
+        self._config = config or DissectMLConfig()
         self._computed = False
         self._results: dict = {}
         self._warnings: list[str] = []
@@ -381,27 +381,27 @@ def read_data(path: str | Path) -> pd.DataFrame:
 ## 5. Exception Hierarchy (`exceptions.py`)
 
 ```python
-class InsightMLError(Exception):
-    """Base exception for all InsightML errors."""
+class DissectMLError(Exception):
+    """Base exception for all DissectML errors."""
 
 # Input/Validation errors
-class ValidationError(InsightMLError): ...
+class ValidationError(DissectMLError): ...
 class EmptyDataFrameError(ValidationError): ...
 class TargetNotFoundError(ValidationError): ...
 class UnsupportedFormatError(ValidationError): ...
 class InvalidTaskError(ValidationError): ...
 
 # Dependency errors
-class DependencyError(InsightMLError): ...
+class DependencyError(DissectMLError): ...
 class OptionalDependencyError(DependencyError): ...
 
 # Computation errors
-class ComputationError(InsightMLError): ...
+class ComputationError(DissectMLError): ...
 class ModelTrainingError(ComputationError): ...
 class TimeoutError(ComputationError): ...
 
 # Report errors
-class ReportError(InsightMLError): ...
+class ReportError(DissectMLError): ...
 class TemplateError(ReportError): ...
 class ExportError(ReportError): ...
 ```
@@ -453,7 +453,7 @@ class TuningMode(str, Enum):
 
 ```python
 @dataclass
-class InsightMLConfig:
+class DissectMLConfig:
     # --- EDA ---
     categorical_threshold: int = 50         # nunique <= this = categorical
     high_cardinality_threshold: int = 100   # nunique > this = high_cardinality
@@ -1285,7 +1285,7 @@ class SmartSampler:
 - [ ] `src/dissectml/__init__.py` — stub `analyze()`, `explore()`, `battle()`
 - [ ] `src/dissectml/_version.py` — `__version__ = "0.1.0"`
 - [ ] `src/dissectml/_types.py` — all enums + TypedDicts
-- [ ] `src/dissectml/_config.py` — InsightMLConfig + get/set/context
+- [ ] `src/dissectml/_config.py` — DissectMLConfig + get/set/context
 - [ ] `src/dissectml/_lazy.py` — optional dependency guard
 - [ ] `src/dissectml/_io.py` — file loading (CSV, Excel, Parquet, JSON)
 - [ ] `src/dissectml/_sampling.py` — SmartSampler

@@ -83,7 +83,7 @@ class BattleResult:
         n_samples: Number of training samples.
         cv_folds: Number of CV folds used.
         primary_metric: Metric name used for ranking.
-        config_snapshot: Copy of InsightMLConfig values at battle time.
+        config_snapshot: Copy of DissectMLConfig values at battle time.
     """
 
     task: str

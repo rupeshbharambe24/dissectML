@@ -1,4 +1,4 @@
-"""Environment detection and display utilities for InsightML."""
+"""Environment detection and display utilities for DissectML."""
 
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ def display_html(html: str) -> None:
     show_in_browser(html)
 
 
-def show_in_browser(html: str, title: str = "InsightML") -> None:
+def show_in_browser(html: str, title: str = "DissectML") -> None:
     """Write html to a temp file and open it in the default web browser."""
     with tempfile.NamedTemporaryFile(
         mode="w", suffix=".html", delete=False, encoding="utf-8"

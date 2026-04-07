@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug to help us improve InsightML
+about: Report a bug to help us improve DissectML
 title: "[BUG] "
 labels: bug
 assignees: ""

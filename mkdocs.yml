@@ -1,8 +1,8 @@
-site_name: InsightML
+site_name: DissectML
 site_description: The missing middle layer between EDA and AutoML
 site_url: https://dissectml.readthedocs.io
-repo_url: https://github.com/rupeshbharambe24/InsightML
-repo_name: insightML
+repo_url: https://github.com/rupeshbharambe24/dissectML
+repo_name: dissectML
 edit_uri: edit/main/docs/docs/
 
 theme:
@@ -76,6 +76,6 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/rupeshbharambe24/InsightML
+      link: https://github.com/rupeshbharambe24/dissectML
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/dissectml/

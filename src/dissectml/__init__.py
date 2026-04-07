@@ -1,5 +1,5 @@
 """
-InsightML — The missing middle layer between EDA and AutoML.
+DissectML — The missing middle layer between EDA and AutoML.
 
 Unified pipeline from deep data understanding to model comparison,
 in as few as 3 function calls.
@@ -24,13 +24,13 @@ Quick start::
 from __future__ import annotations
 
 from dissectml._compat import to_pandas
-from dissectml._config import InsightMLConfig, config_context, get_config, set_config
+from dissectml._config import DissectMLConfig, config_context, get_config, set_config
 from dissectml._version import __version__
 from dissectml.battle import battle
 from dissectml.compare import ModelComparator
 from dissectml.datasets import load_housing, load_titanic
 from dissectml.eda import explore
-from dissectml.exceptions import InsightMLError
+from dissectml.exceptions import DissectMLError
 from dissectml.intelligence import analyze_intelligence
 from dissectml.report import AnalysisReport
 
@@ -49,12 +49,12 @@ __all__ = [
     # Compat
     "to_pandas",
     # Config
-    "InsightMLConfig",
+    "DissectMLConfig",
     "get_config",
     "set_config",
     "config_context",
     # Exceptions
-    "InsightMLError",
+    "DissectMLError",
 ]
 
 

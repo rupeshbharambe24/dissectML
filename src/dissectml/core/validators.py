@@ -6,7 +6,7 @@ import warnings
 
 import pandas as pd
 
-from dissectml._config import InsightMLConfig
+from dissectml._config import DissectMLConfig
 from dissectml._types import ColumnType, DataSchema, TaskType
 from dissectml.exceptions import EmptyDataFrameError, TargetNotFoundError
 
@@ -62,13 +62,13 @@ def infer_task(target: pd.Series) -> TaskType:
 
 def infer_column_type(
     col: pd.Series,
-    config: InsightMLConfig,
+    config: DissectMLConfig,
 ) -> ColumnType:
     """Infer the semantic type of a single column.
 
     Args:
         col: Column Series.
-        config: InsightML configuration (thresholds).
+        config: DissectML configuration (thresholds).
 
     Returns:
         ColumnType enum value.
@@ -134,7 +134,7 @@ def infer_schema(
     df: pd.DataFrame,
     target: str | None,
     task: TaskType,
-    config: InsightMLConfig,
+    config: DissectMLConfig,
 ) -> DataSchema:
     """Build a DataSchema by inferring the type of every column.
 
@@ -142,7 +142,7 @@ def infer_schema(
         df: Input DataFrame.
         target: Target column name (may be None).
         task: Resolved task type.
-        config: InsightML configuration.
+        config: DissectML configuration.
 
     Returns:
         DataSchema TypedDict.
@@ -168,7 +168,7 @@ def infer_schema(
 
 
 def validate_dataframe(df: pd.DataFrame, target: str | None = None) -> None:
-    """Raise if the DataFrame is invalid for InsightML.
+    """Raise if the DataFrame is invalid for DissectML.
 
     Args:
         df: DataFrame to validate.

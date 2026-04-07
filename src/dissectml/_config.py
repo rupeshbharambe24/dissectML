@@ -1,4 +1,4 @@
-"""Global configuration for InsightML with context manager support."""
+"""Global configuration for DissectML with context manager support."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from typing import Any
 
 
 @dataclass
-class InsightMLConfig:
-    """Configuration dataclass for InsightML.
+class DissectMLConfig:
+    """Configuration dataclass for DissectML.
 
     Three override levels (highest to lowest priority):
         per-call kwargs > config_context() > set_config() > defaults
@@ -49,7 +49,7 @@ class InsightMLConfig:
     # --- General ---
     verbosity: int = 1                      # 0=silent, 1=progress, 2=debug
 
-    def copy_with(self, **kwargs: Any) -> InsightMLConfig:
+    def copy_with(self, **kwargs: Any) -> DissectMLConfig:
         """Return a copy of this config with the given fields overridden."""
         cfg = copy.copy(self)
         for key, value in kwargs.items():
@@ -63,11 +63,11 @@ class InsightMLConfig:
 # Global config state (thread-local for context manager support)
 # ---------------------------------------------------------------------------
 
-_global_config = InsightMLConfig()
+_global_config = DissectMLConfig()
 _thread_local = threading.local()
 
 
-def get_config() -> InsightMLConfig:
+def get_config() -> DissectMLConfig:
     """Return the currently active configuration.
 
     Returns thread-local config if inside config_context(), else the global config.
@@ -90,7 +90,7 @@ def set_config(**kwargs: Any) -> None:
 
 
 @contextlib.contextmanager
-def config_context(**kwargs: Any) -> Generator[InsightMLConfig, None, None]:
+def config_context(**kwargs: Any) -> Generator[DissectMLConfig, None, None]:
     """Temporarily override configuration within a with-block.
 
     Example::

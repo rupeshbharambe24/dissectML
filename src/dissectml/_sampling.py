@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import pandas as pd
 
-from dissectml._config import InsightMLConfig
+from dissectml._config import DissectMLConfig
 
 
 def smart_sample(
     df: pd.DataFrame,
     target: str | None = None,
-    config: InsightMLConfig | None = None,
+    config: DissectMLConfig | None = None,
     *,
     force: bool = False,
 ) -> pd.DataFrame:
@@ -24,7 +24,7 @@ def smart_sample(
     Args:
         df: Input DataFrame.
         target: Target column name (enables stratified sampling if given).
-        config: InsightML configuration. Uses global config if None.
+        config: DissectML configuration. Uses global config if None.
         force: If True, always sample even below threshold.
 
     Returns:

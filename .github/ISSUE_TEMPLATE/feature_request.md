@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new feature or improvement for InsightML
+about: Suggest a new feature or improvement for DissectML
 title: "[FEATURE] "
 labels: enhancement
 assignees: ""

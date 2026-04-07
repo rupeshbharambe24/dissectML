@@ -1,4 +1,4 @@
-"""Optional PDF export for InsightML reports.
+"""Optional PDF export for DissectML reports.
 
 Requires the ``report`` extra::
 

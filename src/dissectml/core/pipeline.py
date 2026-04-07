@@ -6,7 +6,7 @@ from typing import Any
 
 import pandas as pd
 
-from dissectml._config import InsightMLConfig, get_config
+from dissectml._config import DissectMLConfig, get_config
 from dissectml.core.base import PipelineContext
 from dissectml.core.data_container import DataContainer
 
@@ -25,7 +25,7 @@ class InsightPipeline:
         5. Report       — HTML report generation
     """
 
-    def __init__(self, config: InsightMLConfig | None = None) -> None:
+    def __init__(self, config: DissectMLConfig | None = None) -> None:
         self.config = config or get_config()
         self.context = PipelineContext(config=self.config)
 

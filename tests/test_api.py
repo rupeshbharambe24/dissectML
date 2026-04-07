@@ -92,11 +92,11 @@ class TestClasses:
         assert inspect.isclass(iml.AnalysisReport)
 
     def test_insight_ml_config_is_class(self):
-        assert inspect.isclass(iml.InsightMLConfig)
+        assert inspect.isclass(iml.DissectMLConfig)
 
     def test_insight_ml_error_is_exception_class(self):
-        assert inspect.isclass(iml.InsightMLError)
-        assert issubclass(iml.InsightMLError, Exception)
+        assert inspect.isclass(iml.DissectMLError)
+        assert issubclass(iml.DissectMLError, Exception)
 
 
 # ---------------------------------------------------------------------------

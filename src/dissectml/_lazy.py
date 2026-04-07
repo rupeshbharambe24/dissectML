@@ -1,4 +1,4 @@
-"""Optional dependency guard for InsightML extras."""
+"""Optional dependency guard for DissectML extras."""
 
 from __future__ import annotations
 

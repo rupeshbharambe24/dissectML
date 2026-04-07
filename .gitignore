@@ -70,7 +70,7 @@ site/
 
 # Reports (generated output)
 *.html
-!InsightML.html
+!DissectML.html
 !src/dissectml/report/templates/
 !src/dissectml/report/assets/
 

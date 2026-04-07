@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for InsightML tests."""
+"""Shared pytest fixtures for DissectML tests."""
 
 from __future__ import annotations
 
@@ -115,6 +115,6 @@ def df_all_types() -> pd.DataFrame:
 
 @pytest.fixture
 def default_config():
-    """Return a fresh default InsightMLConfig."""
-    from dissectml._config import InsightMLConfig
-    return InsightMLConfig()
+    """Return a fresh default DissectMLConfig."""
+    from dissectml._config import DissectMLConfig
+    return DissectMLConfig()

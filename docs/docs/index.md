@@ -1,8 +1,8 @@
-# InsightML
+# DissectML
 
 **The missing middle layer between EDA and AutoML.**
 
-InsightML (`dissectml` on PyPI) gives data scientists a single, unified pipeline from raw data to publication-ready insights — in as few as 3 function calls.
+DissectML (`dissectml` on PyPI) gives data scientists a single, unified pipeline from raw data to publication-ready insights — in as few as 3 function calls.
 
 ```python
 import dissectml as iml
@@ -14,9 +14,9 @@ report.export("report.html")
 
 ---
 
-## Why InsightML?
+## Why DissectML?
 
-| Without InsightML | With InsightML |
+| Without DissectML | With DissectML |
 |---|---|
 | YData Profiling + PyCaret + SHAP + matplotlib | One library |
 | 30+ lines of boilerplate | 3 function calls |

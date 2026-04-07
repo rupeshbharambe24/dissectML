@@ -10,7 +10,7 @@
         - analyze_intelligence
         - ModelComparator
         - AnalysisReport
-        - InsightMLConfig
+        - DissectMLConfig
         - get_config
         - set_config
         - config_context

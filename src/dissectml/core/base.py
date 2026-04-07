@@ -1,4 +1,4 @@
-"""Base classes for InsightML's pipeline architecture."""
+"""Base classes for DissectML's pipeline architecture."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import pandas as pd
 from dissectml.viz.display import display_html
 
 if TYPE_CHECKING:
-    from dissectml._config import InsightMLConfig
+    from dissectml._config import DissectMLConfig
     from dissectml.core.data_container import DataContainer
     from dissectml.core.progress import ProgressTracker
 
@@ -128,7 +128,7 @@ class PipelineContext:
     intelligence_result: Any | None = None  # IntelligenceResult
     battle_result: Any | None = None        # BattleResult
     compare_result: Any | None = None       # CompareResult
-    config: InsightMLConfig = field(
+    config: DissectMLConfig = field(
         default_factory=lambda: _default_config()
     )
     progress: ProgressTracker | None = None
@@ -139,6 +139,6 @@ class PipelineContext:
             self.progress = ProgressTracker()
 
 
-def _default_config() -> InsightMLConfig:
+def _default_config() -> DissectMLConfig:
     from dissectml._config import get_config
     return get_config()

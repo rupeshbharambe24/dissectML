@@ -1,4 +1,4 @@
-"""Section builders for the InsightML HTML report."""
+"""Section builders for the DissectML HTML report."""
 
 from dissectml.report.sections.battle_section import build_battle_section
 from dissectml.report.sections.compare_section import build_compare_section

@@ -27,7 +27,7 @@ models = iml.battle(df, target="survived", exclude=["SVC", "KNN"])
 
 ## Task Inference
 
-InsightML infers `"classification"` or `"regression"` automatically:
+DissectML infers `"classification"` or `"regression"` automatically:
 
 - Boolean/categorical/object dtypes → classification
 - Numeric with ≤ 20 unique values → classification

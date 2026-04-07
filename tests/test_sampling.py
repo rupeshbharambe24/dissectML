@@ -5,16 +5,16 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from dissectml._config import InsightMLConfig
+from dissectml._config import DissectMLConfig
 from dissectml._sampling import smart_sample
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _make_config(threshold: int = 50, sample_size: int = 30) -> InsightMLConfig:
+def _make_config(threshold: int = 50, sample_size: int = 30) -> DissectMLConfig:
     """Create a config with small thresholds suitable for testing."""
-    return InsightMLConfig(large_dataset_threshold=threshold, sample_size=sample_size)
+    return DissectMLConfig(large_dataset_threshold=threshold, sample_size=sample_size)
 
 
 # ---------------------------------------------------------------------------

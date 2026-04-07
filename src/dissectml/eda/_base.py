@@ -8,7 +8,7 @@ from typing import Any
 import pandas as pd
 import plotly.graph_objects as go
 
-from dissectml._config import InsightMLConfig, get_config
+from dissectml._config import DissectMLConfig, get_config
 from dissectml.viz.display import display_html
 
 
@@ -31,7 +31,7 @@ class BaseAnalysisModule(ABC):
         df: pd.DataFrame,
         *,
         target: str | None = None,
-        config: InsightMLConfig | None = None,
+        config: DissectMLConfig | None = None,
     ) -> None:
         self._df = df
         self._target = target

@@ -1,6 +1,6 @@
-# Contributing to InsightML
+# Contributing to DissectML
 
-Thank you for your interest in contributing to InsightML. This guide covers
+Thank you for your interest in contributing to DissectML. This guide covers
 everything you need to get started.
 
 ---
@@ -22,8 +22,8 @@ everything you need to get started.
 1. Fork the repository on GitHub and clone your fork:
 
    ```bash
-   git clone https://github.com/rupeshbharambe24/InsightML.git
-   cd InsightML
+   git clone https://github.com/rupeshbharambe24/dissectML.git
+   cd DissectML
    ```
 
 2. Create and activate a virtual environment (recommended):
@@ -138,4 +138,4 @@ All contributors are expected to follow our
 
 ---
 
-Thank you for helping make InsightML better.
+Thank you for helping make DissectML better.

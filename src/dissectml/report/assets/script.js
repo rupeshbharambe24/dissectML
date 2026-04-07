@@ -1,5 +1,5 @@
 /**
- * InsightML Report — Interactive enhancements
+ * DissectML Report — Interactive enhancements
  *
  * Used as external reference; html_renderer.py embeds a minified version inline.
  */

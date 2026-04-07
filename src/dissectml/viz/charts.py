@@ -1,4 +1,4 @@
-"""Chart factory functions for InsightML visualizations (Plotly only)."""
+"""Chart factory functions for DissectML visualizations (Plotly only)."""
 
 from __future__ import annotations
 

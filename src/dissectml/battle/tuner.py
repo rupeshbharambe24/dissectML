@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import KFold, RandomizedSearchCV, StratifiedKFold
 
-from dissectml._config import InsightMLConfig, get_config
+from dissectml._config import DissectMLConfig, get_config
 from dissectml.battle.param_grids import get_param_grid
 from dissectml.battle.preprocessing import PreprocessingPlan, build_full_pipeline
 from dissectml.battle.registry import ModelRegistry, get_registry
@@ -39,7 +39,7 @@ class ModelTuner:
         top_n: int = 3,
         n_iter: int = 20,
         cv: int = 3,
-        config: InsightMLConfig | None = None,
+        config: DissectMLConfig | None = None,
         registry: ModelRegistry | None = None,
         custom_grids: dict[str, dict] | None = None,
     ) -> None:

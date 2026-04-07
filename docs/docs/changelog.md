@@ -35,4 +35,4 @@
 - `eda/` — `EDAResult` with lazy sub-modules: overview, correlations, missing, outliers,
   statistical tests, clusters, interactions, target analysis
 - `iml.explore()` entry point
-- `InsightMLConfig`, `config_context()`, `set_config()`
+- `DissectMLConfig`, `config_context()`, `set_config()`

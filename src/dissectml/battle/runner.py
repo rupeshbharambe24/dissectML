@@ -12,7 +12,7 @@ import pandas as pd
 from joblib import Parallel, delayed
 from sklearn.model_selection import KFold, StratifiedKFold, cross_validate
 
-from dissectml._config import InsightMLConfig, get_config
+from dissectml._config import DissectMLConfig, get_config
 from dissectml.battle.catalog import ModelEntry
 from dissectml.battle.preprocessing import (
     PreprocessingPlan,
@@ -62,14 +62,14 @@ class BattleRunner:
         result.leaderboard()
 
     Args:
-        config: InsightMLConfig to use. Defaults to the global config.
+        config: DissectMLConfig to use. Defaults to the global config.
         registry: ModelRegistry to draw models from. Defaults to the module-level registry.
         eda_result: Optional EDAResult to inform preprocessing choices.
     """
 
     def __init__(
         self,
-        config: InsightMLConfig | None = None,
+        config: DissectMLConfig | None = None,
         registry: ModelRegistry | None = None,
         eda_result: Any = None,
     ) -> None:

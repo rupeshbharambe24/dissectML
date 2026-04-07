@@ -1,6 +1,6 @@
 # HTML Reports
 
-InsightML generates self-contained interactive HTML reports — a single file with
+DissectML generates self-contained interactive HTML reports — a single file with
 embedded CSS, Plotly charts (via CDN), collapsible sections, and a sticky sidebar TOC.
 
 ## Generating a Report

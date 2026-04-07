@@ -80,7 +80,7 @@ class AnalysisReport:
     def summary(self) -> str:
         """Return a plain-text summary of the full analysis."""
         parts: list[str] = [
-            "=== InsightML Analysis Report ===",
+            "=== DissectML Analysis Report ===",
             f"Task: {self.task}  |  Target: {self.target}",
             f"Dataset: {self.n_samples:,} samples × {self.n_features} features",
         ]

@@ -1,4 +1,4 @@
-"""Enums, TypedDicts, and type aliases used across InsightML."""
+"""Enums, TypedDicts, and type aliases used across DissectML."""
 
 from __future__ import annotations
 

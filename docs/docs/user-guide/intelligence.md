@@ -5,7 +5,7 @@ All sub-modules are lazy — no computation until accessed.
 
 ## Leakage Detection
 
-InsightML uses a four-pronged scan:
+DissectML uses a four-pronged scan:
 
 | Method | Threshold | Description |
 |---|---|---|

@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from dissectml._config import InsightMLConfig
+from dissectml._config import DissectMLConfig
 from dissectml.core.data_container import DataContainer
 from dissectml.core.pipeline import InsightPipeline
 from dissectml.eda.result import EDAResult
@@ -44,11 +44,11 @@ class TestInsightPipelineInit:
         """InsightPipeline() uses default config when none is provided."""
         pipe = InsightPipeline()
         assert pipe.config is not None
-        assert isinstance(pipe.config, InsightMLConfig)
+        assert isinstance(pipe.config, DissectMLConfig)
 
     def test_creates_with_custom_config(self):
         """InsightPipeline(config) stores the custom config."""
-        cfg = InsightMLConfig(cv_folds=10, verbosity=0)
+        cfg = DissectMLConfig(cv_folds=10, verbosity=0)
         pipe = InsightPipeline(config=cfg)
         assert pipe.config.cv_folds == 10
         assert pipe.config.verbosity == 0

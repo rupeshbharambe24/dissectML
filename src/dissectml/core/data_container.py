@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from dissectml._config import InsightMLConfig, get_config
+from dissectml._config import DissectMLConfig, get_config
 from dissectml._io import read_data
 from dissectml._sampling import smart_sample
 from dissectml._types import DataSchema, TaskType
@@ -52,7 +52,7 @@ class DataContainer:
         data: str | Path | pd.DataFrame,
         target: str | None = None,
         task: str | TaskType = TaskType.AUTO,
-        config: InsightMLConfig | None = None,
+        config: DissectMLConfig | None = None,
     ) -> DataContainer:
         """Create a DataContainer from multiple input types.
 

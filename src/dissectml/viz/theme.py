@@ -1,4 +1,4 @@
-"""InsightML Plotly theme and template."""
+"""DissectML Plotly theme and template."""
 
 from __future__ import annotations
 
@@ -64,19 +64,19 @@ pio.templates["dissectml"] = INSIGHTML_TEMPLATE
 
 
 def apply_theme() -> None:
-    """Set InsightML as the default Plotly template globally."""
+    """Set DissectML as the default Plotly template globally."""
     pio.templates.default = "dissectml"
 
 
 def make_figure(title: str = "", **layout_kwargs) -> go.Figure:
-    """Create a blank Figure with the InsightML theme applied.
+    """Create a blank Figure with the DissectML theme applied.
 
     Args:
         title: Chart title.
         **layout_kwargs: Additional layout overrides.
 
     Returns:
-        A new go.Figure with InsightML template.
+        A new go.Figure with DissectML template.
     """
     fig = go.Figure()
     fig.update_layout(template="dissectml", title=title, **layout_kwargs)
