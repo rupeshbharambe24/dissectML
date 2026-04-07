@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "dissectml"
 dynamic = ["version"]
-description = "The missing middle layer between EDA and AutoML — deep data understanding meets model comparison"
+description = "The missing middle layer between EDA and AutoML - deep data understanding meets model comparison"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
