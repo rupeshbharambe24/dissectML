@@ -49,11 +49,15 @@ _LAYOUT = go.Layout(
         "gridcolor": "#e2e8f0",
         "linecolor": "#cbd5e0",
         "zerolinecolor": "#cbd5e0",
+        "automargin": True,
     },
     yaxis={
         "gridcolor": "#e2e8f0",
         "linecolor": "#cbd5e0",
         "zerolinecolor": "#cbd5e0",
+        # Auto-expand the margin so long tick labels (e.g. model or feature
+        # names on horizontal bar charts) are never clipped.
+        "automargin": True,
     },
 )
 

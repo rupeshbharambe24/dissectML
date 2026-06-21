@@ -299,6 +299,6 @@ def metric_bar_chart(
     fig.update_layout(
         xaxis_title=metric, yaxis_title="Model",
         height=max(300, len(names) * 35 + 100),
-        yaxis={"autorange": "reversed"},
+        yaxis={"autorange": "reversed", "automargin": True},
     )
     return fig
