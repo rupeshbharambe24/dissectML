@@ -5,6 +5,28 @@ All notable changes to DissectML will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-06-21
+
+### Fixed
+- Removed the silent `n_iter=5` cap in `ModelTuner`; tuned mode now honors the requested `n_iter` (default 20).
+- Tuned model scores are now fully consistent: every metric, standard deviation, and out-of-fold prediction is recomputed for the tuned estimator on the battle's CV folds. Previously only the primary metric was overwritten, leaving the remaining metrics and OOF predictions from the untuned model (which Stage-4 error analysis, ROC, and significance tests relied on).
+- Long axis labels (model and feature names) on horizontal bar charts are no longer clipped — enabled Plotly `automargin` on the theme axes.
+
+### Changed
+- Renamed the Plotly template `INSIGHTML_TEMPLATE` to `DISSECTML_TEMPLATE`.
+
+### Deprecated
+- `dissectml.viz.INSIGHTML_TEMPLATE` is kept as an alias for `DISSECTML_TEMPLATE` and may be removed in a future release.
+
+### Removed
+- Dead `report/sections/` module — the HTML renderer builds its sections internally.
+- Unused `_MNAR_IMPUTER` constant in battle preprocessing.
+
+### Documentation
+- Corrected the model catalog count to 19 classifiers + 19 regressors (38 models) in README, docs, and PLAN.
+- Corrected misleading `InsightPipeline` docstrings (the full pipeline is driven by `dml.analyze()`).
+- Updated the remaining `iml` import alias to `dml` in `DissectML.html` examples.
+
 ## [0.1.2] - 2026-04-07
 
 ### Changed
