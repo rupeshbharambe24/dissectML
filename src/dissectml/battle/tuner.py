@@ -203,7 +203,7 @@ def _tune_one(
             search = RandomizedSearchCV(
                 pipeline,
                 param_distributions=param_grid,
-                n_iter=min(n_iter, 5),  # safety cap
+                n_iter=n_iter,
                 scoring=primary_scorer,
                 cv=splitter,
                 refit=True,
