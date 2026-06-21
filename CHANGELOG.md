@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cluster discovery: auto K-Means + DBSCAN with profiling
 - Feature interactions: interaction strength, non-linearity detection
 - Target analysis: class balance, distribution, feature-target relationships
-- `dml.battle(df, target)` — parallel CV across 19 classifiers / 17 regressors
+- `dml.battle(df, target)` — parallel CV across 19 classifiers / 19 regressors
 - EDA-informed preprocessing (KNN imputer, Robust scaler, OrdinalEncoder)
 - ModelRegistry, MODEL_CATALOG, ModelTuner (quick/tuned/custom modes)
 - `dml.analyze_intelligence(df, target)` — 4-pronged leakage detection, VIF, condition number

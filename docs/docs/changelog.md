@@ -27,7 +27,7 @@
 ### Added
 - `battle/` — `ModelRegistry`, `BattleRunner`, `ModelTuner`, EDA-informed preprocessing
 - `dml.battle()` entry point
-- 19 classifiers + 17 regressors in default catalogue
+- 19 classifiers + 19 regressors in default catalogue
 
 ## v0.1.0
 

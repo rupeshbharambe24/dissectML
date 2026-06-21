@@ -102,7 +102,7 @@ D:\Projects\dissectML\
 │       │
 │       ├── battle/
 │       │   ├── __init__.py            # battle() entry point
-│       │   ├── catalog.py             # MODEL_CATALOG: 19 classifiers + 17 regressors
+│       │   ├── catalog.py             # MODEL_CATALOG: 19 classifiers + 19 regressors
 │       │   ├── registry.py            # ModelRegistry: register/unregister/filter
 │       │   ├── preprocessing.py       # EDA-informed ColumnTransformer builder
 │       │   ├── runner.py              # BattleRunner: parallel CV training + timing
@@ -877,7 +877,7 @@ Final scores clamped [0, 100], sorted descending.
 | 18 | LightGBM | LGBMClassifier | ensemble | Yes (boost) | Yes |
 | 19 | CatBoost | CatBoostClassifier | ensemble | Yes (boost) | Yes |
 
-**17 regressors**: parallel structure — Linear, Ridge, Lasso, ElasticNet, SGD, KNN, SVR, DT, RF, ET, GB, HistGB, AdaBoost, Bagging, MLP, XGB, LGBM, CatBoost.
+**19 regressors**: parallel structure — Linear, Ridge, Lasso, ElasticNet, Huber, SGD, KNN, SVR (linear + rbf), DT, RF, ET, GB, AdaBoost, Bagging, MLP, XGB, LGBM, CatBoost.
 
 **ModelEntry dataclass**:
 ```python

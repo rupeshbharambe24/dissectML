@@ -29,7 +29,7 @@ report.export("report.html")
 
 - **Deep EDA** — unified correlation matrix, MCAR/MAR/MNAR missing analysis, auto clustering, interaction detection
 - **Pre-model Intelligence** — 4-pronged leakage detection, VIF, data readiness score (0–100), algorithm recommendations
-- **Model Battle** — parallel CV across 19 classifiers / 17 regressors with EDA-informed preprocessing
+- **Model Battle** — parallel CV across 19 classifiers / 19 regressors with EDA-informed preprocessing
 - **Comparative Analysis** — McNemar test, corrected paired t-test, Pareto front, cross-model error analysis
 - **HTML Report** — self-contained interactive report with Plotly charts, collapsible sections, sidebar TOC
 

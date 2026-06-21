@@ -83,10 +83,10 @@ notebooks.
 
 ### Model Comparison
 
-- **36-model battle arena** --
-  19 classifiers and 17 regressors (plus optional XGBoost, LightGBM, and
-  CatBoost) trained and evaluated with parallel cross-validation in a single
-  call.
+- **38-model battle arena** --
+  19 classifiers and 19 regressors (including optional XGBoost, LightGBM, and
+  CatBoost when the `boost` extra is installed) trained and evaluated with
+  parallel cross-validation in a single call.
 
 - **Cross-model error analysis** --
   Identifies the hardest samples, builds a model complementarity matrix, and
