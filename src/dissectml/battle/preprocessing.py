@@ -57,7 +57,6 @@ class PreprocessingPlan:
 
 _HIGH_CARDINALITY_THRESHOLD = 15  # OneHot vs OrdinalEncoder boundary
 _OUTLIER_SEVERITY_THRESHOLD = 0.05  # fraction of outliers -> RobustScaler
-_MNAR_IMPUTER = "knn"  # KNN for MNAR / MAR patterns
 
 
 def build_preprocessing_plan(

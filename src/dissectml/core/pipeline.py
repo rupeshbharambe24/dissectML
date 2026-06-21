@@ -12,12 +12,16 @@ from dissectml.core.data_container import DataContainer
 
 
 class InsightPipeline:
-    """Runs all pipeline stages in sequence, passing context between them.
+    """Lightweight stage orchestrator that passes context between stages.
 
-    Used internally by ``dml.analyze()``. Individual stages can also be
-    accessed directly via ``dml.explore()`` or ``dml.battle()``.
+    .. note::
+        The end-to-end pipeline is driven by :func:`dissectml.analyze`, which
+        calls each stage directly; it does **not** use this class. Only
+        :meth:`run_eda` is currently implemented here — :meth:`run` is a stub.
+        Use ``dml.analyze()`` for the full pipeline or ``dml.explore()`` /
+        ``dml.battle()`` for individual stages.
 
-    Stages (v0.4 full pipeline):
+    Stages (full pipeline, via ``dml.analyze``):
         1. EDA         — Deep exploratory data analysis
         2. Intelligence — Pre-model intelligence (leakage, readiness, recommendations)
         3. Battle       — Multi-model parallel training + CV scoring
@@ -45,15 +49,17 @@ class InsightPipeline:
     ) -> Any:
         """Run the complete pipeline and return an AnalysisReport.
 
-        Available in v0.4+. Currently raises NotImplementedError for stages 2-5.
+        Not implemented on this class. Use :func:`dissectml.analyze` instead,
+        which runs all five stages end-to-end.
         """
         container = DataContainer.from_input(data, target=target, task=task, config=self.config)
 
-        # Stage 1: EDA (v0.1+)
+        # Stage 1: EDA (the only stage wired into this orchestrator)
         self.run_eda(container)
 
-        # Stages 2-5: to be implemented in v0.2-v0.4
+        # Stages 2-5 are not orchestrated here; dml.analyze() drives them directly.
         raise NotImplementedError(
-            "Full pipeline (dml.analyze) is available in v0.4+. "
-            "Use dml.explore(df) for EDA."
+            "Full pipeline orchestration via InsightPipeline.run() is not "
+            "implemented. Use dml.analyze(df, target=...) for the full pipeline, "
+            "or dml.explore(df) for EDA only."
         )
