@@ -638,10 +638,10 @@
 
   <h3 style="margin: 3rem 0 1rem;">Dream API — 3 Lines to Full Insights</h3>
   <div class="code-block">
-<pre><span class="kw">import</span> dissectml <span class="kw">as</span> <span class="var">iml</span>
+<pre><span class="kw">import</span> dissectml <span class="kw">as</span> <span class="var">dml</span>
 
 <span class="cmt"># ══ ONE-LINER: Full EDA + Model Comparison Pipeline ══</span>
-<span class="var">report</span> = <span class="var">iml</span>.<span class="fn">analyze</span>(
+<span class="var">report</span> = <span class="var">dml</span>.<span class="fn">analyze</span>(
     data=<span class="str">"dataset.csv"</span>,
     target=<span class="str">"price"</span>,
     task=<span class="str">"regression"</span>    <span class="cmt"># auto-detected if not specified</span>
@@ -654,8 +654,8 @@
 <span class="var">report</span>.<span class="fn">export</span>(<span class="str">"report.html"</span>) <span class="cmt"># Full interactive report</span>
 
 <span class="cmt"># ══ OR use stages independently ══</span>
-<span class="var">eda</span> = <span class="var">iml</span>.<span class="fn">explore</span>(df)                  <span class="cmt"># Deep EDA only</span>
-<span class="var">models</span> = <span class="var">iml</span>.<span class="fn">battle</span>(df, target=<span class="str">"price"</span>)  <span class="cmt"># Model comparison only</span>
+<span class="var">eda</span> = <span class="var">dml</span>.<span class="fn">explore</span>(df)                  <span class="cmt"># Deep EDA only</span>
+<span class="var">models</span> = <span class="var">dml</span>.<span class="fn">battle</span>(df, target=<span class="str">"price"</span>)  <span class="cmt"># Model comparison only</span>
 
 <span class="cmt"># ══ Granular access to every insight ══</span>
 <span class="var">eda</span>.<span class="fn">outliers</span>.<span class="fn">plot</span>()           <span class="cmt"># Outlier analysis with IQR + Z-score + Isolation Forest</span>
