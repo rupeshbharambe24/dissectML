@@ -57,10 +57,13 @@ _LAYOUT = go.Layout(
     },
 )
 
-INSIGHTML_TEMPLATE = go.layout.Template(layout=_LAYOUT)
+DISSECTML_TEMPLATE = go.layout.Template(layout=_LAYOUT)
+
+# Deprecated alias kept for backward compatibility (pre-rename name).
+INSIGHTML_TEMPLATE = DISSECTML_TEMPLATE
 
 # Register the template with Plotly so `template="dissectml"` works
-pio.templates["dissectml"] = INSIGHTML_TEMPLATE
+pio.templates["dissectml"] = DISSECTML_TEMPLATE
 
 
 def apply_theme() -> None:

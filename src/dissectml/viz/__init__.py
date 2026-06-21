@@ -1,9 +1,14 @@
 """Visualization infrastructure for DissectML."""
 
 from dissectml.viz.display import detect_environment, display_html, show_in_browser
-from dissectml.viz.theme import INSIGHTML_TEMPLATE, apply_theme
+from dissectml.viz.theme import (
+    DISSECTML_TEMPLATE,
+    INSIGHTML_TEMPLATE,  # deprecated alias for DISSECTML_TEMPLATE
+    apply_theme,
+)
 
 __all__ = [
+    "DISSECTML_TEMPLATE",
     "INSIGHTML_TEMPLATE",
     "apply_theme",
     "detect_environment",
