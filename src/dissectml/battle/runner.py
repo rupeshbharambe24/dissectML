@@ -213,6 +213,68 @@ class BattleRunner:
 # ---------------------------------------------------------------------------
 
 
+def _evaluate_pipeline(
+    pipeline: Any,
+    X: pd.DataFrame,
+    y: pd.Series,
+    splitter: Any,
+    task: str,
+) -> dict[str, Any]:
+    """Cross-validate a pipeline and collect metrics + OOF predictions.
+
+    Shared by :func:`_train_one` (battle) and the tuner so that tuned and
+    untuned models are scored with an identical metric set and CV scheme.
+
+    Returns a dict with keys: ``metrics``, ``metrics_std``, ``train_time``,
+    ``predict_time``, ``oof_predictions``, ``oof_probabilities``,
+    ``fitted_pipeline``.
+    """
+    metrics_map = (
+        _CLASSIFICATION_METRICS if task == "classification" else _REGRESSION_METRICS
+    )
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        cv_out = cross_validate(
+            pipeline,
+            X, y,
+            cv=splitter,
+            scoring=metrics_map,
+            return_estimator=True,
+            return_train_score=False,
+            n_jobs=1,
+            error_score="raise",
+        )
+
+    metrics: dict[str, float] = {}
+    metrics_std: dict[str, float] = {}
+    for key in metrics_map:
+        raw = cv_out.get(f"test_{key}", np.array([]))
+        # sklearn prefixes negated metrics with "neg_"; convert back
+        vals = np.array(raw, dtype=float)
+        if key.startswith("neg_"):
+            vals = -vals
+            display_key = key[4:]  # strip "neg_"
+        else:
+            display_key = key
+        metrics[display_key] = round(float(np.nanmean(vals)), 6)
+        metrics_std[display_key] = round(float(np.nanstd(vals)), 6)
+
+    oof_preds, oof_probs = _collect_oof(
+        pipeline, X, y, splitter, task, cv_out["estimator"]
+    )
+
+    return {
+        "metrics": metrics,
+        "metrics_std": metrics_std,
+        "train_time": float(np.sum(cv_out.get("fit_time", [0]))),
+        "predict_time": float(np.sum(cv_out.get("score_time", [0]))),
+        "oof_predictions": oof_preds,
+        "oof_probabilities": oof_probs,
+        "fitted_pipeline": cv_out["estimator"][-1],  # last fold's fitted pipeline
+    }
+
+
 def _train_one(
     entry: ModelEntry,
     X: pd.DataFrame,
@@ -233,59 +295,18 @@ def _train_one(
             tree_based=entry.tree_based,
         )
 
-        metrics_map = (
-            _CLASSIFICATION_METRICS if task == "classification" else _REGRESSION_METRICS
-        )
-
-        # Use cross_validate for metric scores + timings
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            cv_out = cross_validate(
-                pipeline,
-                X, y,
-                cv=splitter,
-                scoring=metrics_map,
-                return_estimator=True,
-                return_train_score=False,
-                n_jobs=1,
-                error_score="raise",
-            )
-
-        # Aggregate metrics
-        metrics: dict[str, float] = {}
-        metrics_std: dict[str, float] = {}
-        for key in metrics_map:
-            raw = cv_out.get(f"test_{key}", np.array([]))
-            # sklearn prefixes negated metrics with "neg_"; convert back
-            vals = np.array(raw, dtype=float)
-            if key.startswith("neg_"):
-                vals = -vals
-                display_key = key[4:]  # strip "neg_"
-            else:
-                display_key = key
-            metrics[display_key] = round(float(np.nanmean(vals)), 6)
-            metrics_std[display_key] = round(float(np.nanstd(vals)), 6)
-
-        train_time = float(np.sum(cv_out.get("fit_time", [0])))
-        predict_time = float(np.sum(cv_out.get("score_time", [0])))
-
-        # OOF predictions
-        oof_preds, oof_probs = _collect_oof(
-            pipeline, X, y, splitter, task, cv_out["estimator"]
-        )
-
-        fitted_pipeline = cv_out["estimator"][-1]  # last fold's fitted pipeline
+        ev = _evaluate_pipeline(pipeline, X, y, splitter, task)
 
         return ModelScore(
             name=entry.name,
             task=task,
-            metrics=metrics,
-            metrics_std=metrics_std,
-            train_time=train_time,
-            predict_time=predict_time,
-            oof_predictions=oof_preds,
-            oof_probabilities=oof_probs,
-            fitted_pipeline=fitted_pipeline,
+            metrics=ev["metrics"],
+            metrics_std=ev["metrics_std"],
+            train_time=ev["train_time"],
+            predict_time=ev["predict_time"],
+            oof_predictions=ev["oof_predictions"],
+            oof_probabilities=ev["oof_probabilities"],
+            fitted_pipeline=ev["fitted_pipeline"],
         )
 
     except Exception as exc:

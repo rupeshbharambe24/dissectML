@@ -15,6 +15,7 @@ from dissectml.battle.param_grids import get_param_grid
 from dissectml.battle.preprocessing import PreprocessingPlan, build_full_pipeline
 from dissectml.battle.registry import ModelRegistry, get_registry
 from dissectml.battle.result import BattleResult, ModelScore
+from dissectml.battle.runner import _evaluate_pipeline
 
 
 class ModelTuner:
@@ -92,13 +93,25 @@ class ModelTuner:
         if plan is None:
             plan = _plan_from_result(battle_result, X)
 
-        # CV splitter
+        # CV splitter for the randomized search
         config = self._config
         splitter = (
             StratifiedKFold(n_splits=self.cv, shuffle=True,
                             random_state=config.random_state)
             if task == "classification"
             else KFold(n_splits=self.cv, shuffle=True,
+                       random_state=config.random_state)
+        )
+
+        # Separate splitter for the final metric evaluation. Uses the battle's
+        # fold count so tuned scores stay comparable with the untuned models
+        # left in the leaderboard.
+        eval_folds = battle_result.cv_folds or self.cv
+        eval_splitter = (
+            StratifiedKFold(n_splits=eval_folds, shuffle=True,
+                            random_state=config.random_state)
+            if task == "classification"
+            else KFold(n_splits=eval_folds, shuffle=True,
                        random_state=config.random_state)
         )
 
@@ -116,6 +129,7 @@ class ModelTuner:
                 y=y,
                 plan=plan,
                 splitter=splitter,
+                eval_splitter=eval_splitter,
                 task=task,
                 param_grid=grid,
                 n_iter=self.n_iter,
@@ -177,13 +191,22 @@ def _tune_one(
     y: pd.Series,
     plan: PreprocessingPlan,
     splitter: Any,
+    eval_splitter: Any,
     task: str,
     param_grid: dict,
     n_iter: int,
     random_state: int,
     registry: ModelRegistry,
 ) -> ModelScore:
-    """Run RandomizedSearchCV for a single model."""
+    """Search hyperparameters for one model, then re-score it consistently.
+
+    The randomized search uses *splitter* and the primary scorer to find the
+    best params; the resulting estimator is then re-evaluated with the full
+    metric set on *eval_splitter*. This means every metric and the OOF
+    predictions come from one consistent CV scheme — the previous version only
+    overwrote the primary metric and kept stale OOF predictions from the
+    untuned model.
+    """
     start = time.perf_counter()
     try:
         entry = registry.get(score.name)
@@ -213,22 +236,21 @@ def _tune_one(
             )
             search.fit(X, y)
 
-        best_score = float(search.best_score_)
+        # Re-score the tuned estimator across the full metric set + fresh OOF.
+        ev = _evaluate_pipeline(search.best_estimator_, X, y, eval_splitter, task)
         elapsed = time.perf_counter() - start
 
-        # Preserve OOF from the original score; tuning only refits once
-        tuned = ModelScore(
+        return ModelScore(
             name=score.name,
             task=task,
-            metrics={**score.metrics, primary_scorer: round(best_score, 6)},
-            metrics_std=score.metrics_std,
+            metrics=ev["metrics"],
+            metrics_std=ev["metrics_std"],
             train_time=elapsed,
-            predict_time=score.predict_time,
-            oof_predictions=score.oof_predictions,
-            oof_probabilities=score.oof_probabilities,
-            fitted_pipeline=search.best_estimator_,
+            predict_time=ev["predict_time"],
+            oof_predictions=ev["oof_predictions"],
+            oof_probabilities=ev["oof_probabilities"],
+            fitted_pipeline=ev["fitted_pipeline"],
         )
-        return tuned
 
     except Exception:
         elapsed = time.perf_counter() - start
