@@ -56,7 +56,7 @@ dev = [
 
 [project.urls]
 Homepage = "https://github.com/rupeshbharambe24/dissectML"
-Documentation = "https://dissectml.readthedocs.io"
+Documentation = "https://github.com/rupeshbharambe24/dissectML/tree/master/docs/docs"
 Repository = "https://github.com/rupeshbharambe24/dissectML"
 "Bug Tracker" = "https://github.com/rupeshbharambe24/dissectML/issues"
 
@@ -65,8 +65,6 @@ path = "src/dissectml/_version.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
-    "PLAN.md",
-    "DissectML.html",
     ".pre-commit-config.yaml",
     "catboost_info/",
     "examples/",

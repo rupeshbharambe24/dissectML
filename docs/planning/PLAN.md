@@ -2,7 +2,7 @@
 
 > **This is the single source of truth for building DissectML.**
 > All decisions, architecture, algorithms, and implementation details are here.
-> Reference: `DissectML.html` (market research), this file (how to build it).
+> Reference: `market-research.html` (market research, same folder), this file (how to build it).
 
 ---
 

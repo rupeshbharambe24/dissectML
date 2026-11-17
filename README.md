@@ -13,7 +13,7 @@
 *Deep data understanding meets model comparison -- the full journey from
 "What is my data?" to "Which model is best and WHY?", in as few as 3 function calls.*
 
-[Quick Start](#quick-start) | [Features](#key-features) | [Installation](#installation) | [Documentation](https://dissectml.readthedocs.io) | [Contributing](#contributing)
+[Quick Start](#quick-start) | [Features](#key-features) | [Installation](#installation) | [Documentation](docs/docs/index.md) | [Contributing](#contributing)
 
 </div>
 
@@ -255,9 +255,9 @@ df_housing = dml.load_housing()    # Regression (house prices)
 
 ## Documentation
 
-Full documentation, API reference, and tutorials are available at:
+Full documentation, API reference, and user guides live in [`docs/docs/`](docs/docs/index.md) (MkDocs Material; build locally with `pip install mkdocs-material "mkdocstrings[python]" && mkdocs serve`). A hosted site is not published yet.
 
-**[https://dissectml.readthedocs.io](https://dissectml.readthedocs.io)**
+Design notes from the build-out (implementation plan and market research) are kept in [`docs/planning/`](docs/planning/).
 
 ---
 

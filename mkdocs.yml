@@ -3,7 +3,8 @@ site_description: The missing middle layer between EDA and AutoML
 site_url: https://dissectml.readthedocs.io
 repo_url: https://github.com/rupeshbharambe24/dissectML
 repo_name: dissectML
-edit_uri: edit/main/docs/docs/
+docs_dir: docs/docs
+edit_uri: edit/master/docs/docs/
 
 theme:
   name: material
